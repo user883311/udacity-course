@@ -1,8 +1,3 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// You can read about packages here: https://flutter.io/using-packages/
 import 'package:flutter/material.dart';
 
 // You can use a relative import, i.e. `import 'category.dart;'` or
@@ -32,9 +27,24 @@ class UnitConverterApp extends StatelessWidget {
         backgroundColor: Colors.green[100],
         body: Center(
           // TODO: Determine what properties you'll need to pass into the widget
-          child: Category(),
+          // child: foodCategory(),
+          child: Category(
+            name: _categoryName,
+            color: _categoryColor,
+            iconLocation: _categoryIcon,
+          ),
         ),
       ),
     );
   }
 }
+
+// Widget foodCategory() {
+//   return ListTile(
+//     leading: Icon(_categoryIcon),
+//     title: Text(
+//       _categoryName,
+//     ),
+//     onTap: () => print("tapped that!"),
+//   );
+// }
