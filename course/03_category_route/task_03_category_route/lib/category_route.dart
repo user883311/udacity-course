@@ -46,9 +46,9 @@ class CategoryRoute extends StatelessWidget {
     // TODO: Create a list of the eight Categories, using the names and colors
     // from above. Use a placeholder icon, such as `Icons.cake` for each
     // Category. We'll add custom icons later.
-    List <Widget> categoriesList = [];
+    List<Widget> categoriesList = [];
     for (var i = 0; i < _categoryNames.length; i++) {
-      categoriesList.add( Category(
+      categoriesList.add(Category(
         color: _baseColors[i],
         iconLocation: Icons.cake,
         name: _categoryNames[i],
@@ -64,7 +64,12 @@ class CategoryRoute extends StatelessWidget {
 
     // TODO: Create an App Bar
     final appBar = AppBar(
-      title: Text("Unit Converter",style: TextStyle(fontSize: 30.0,),),
+      title: Text(
+        "Unit Converter",
+        style: TextStyle(
+          fontSize: 30.0,
+        ),
+      ),
     );
     return Scaffold(
       appBar: appBar,

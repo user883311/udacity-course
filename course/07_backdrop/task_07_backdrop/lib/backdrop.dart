@@ -42,7 +42,8 @@ class _BackdropPanel extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             onVerticalDragUpdate: onVerticalDragUpdate,
             onVerticalDragEnd: onVerticalDragEnd,
-            onTap: onTap,
+            onTap: onTap, // I will have to localize which category
+                          // has been tapped. 
             child: Container(
               height: 48.0,
               padding: EdgeInsetsDirectional.only(start: 16.0),
@@ -66,8 +67,8 @@ class _BackdropPanel extends StatelessWidget {
 }
 
 class _BackdropTitle extends AnimatedWidget {
-  final Widget frontTitle;
-  final Widget backTitle;
+  final Widget frontTitle; // "[category.name]"
+  final Widget backTitle; // "Select a category"
 
   const _BackdropTitle({
     Key key,
@@ -265,8 +266,8 @@ class _BackdropState extends State<Backdrop>
         ),
         title: _BackdropTitle(
           listenable: _controller.view,
-          frontTitle: widget.frontTitle,
-          backTitle: widget.backTitle,
+          frontTitle: widget.frontTitle, // unit_converter 
+          backTitle: widget.backTitle, // category route
         ),
       ),
       body: LayoutBuilder(

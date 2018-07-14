@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'category.dart';
 import 'category_tile.dart';
 import 'unit.dart';
+import 'backdrop.dart';
+import 'unit_converter.dart';
 
 final _backgroundColor = Colors.green[100];
 
@@ -38,6 +40,9 @@ class _CategoryRouteState extends State<CategoryRoute> {
     'Energy',
     'Currency',
   ];
+  Category defaultCategory;
+  Category currentCategory;
+
   static const _baseColors = <ColorSwatch>[
     ColorSwatch(0xFF6AB7A8, {
       'highlight': Color(0xFF6AB7A8),
@@ -76,21 +81,31 @@ class _CategoryRouteState extends State<CategoryRoute> {
 
   @override
   void initState() {
+    print("initState");
     super.initState();
     // TODO: Set the default [Category] for the unit converter that opens
     for (var i = 0; i < _categoryNames.length; i++) {
-      _categories.add(Category(
-        name: _categoryNames[i],
-        color: _baseColors[i],
-        iconLocation: Icons.cake,
-        units: _retrieveUnitList(_categoryNames[i]),
-      ));
+      _categories.add(
+        Category(
+          name: _categoryNames[i],
+          color: _baseColors[i],
+          iconLocation: Icons.cake,
+          units: _retrieveUnitList(_categoryNames[i]),
+        ),
+      );
     }
+    defaultCategory = _categories[0];
+    print("default category is $defaultCategory");
   }
 
   // TODO: Fill out this function
   /// Function to call when a [Category] is tapped.
-  void _onCategoryTap(Category category) {}
+  void _onCategoryTap(Category category) {
+    setState(() {
+      currentCategory = category;
+      print(category.name);
+    });
+  }
 
   /// Makes the correct number of rows for the list view.
   ///
@@ -121,28 +136,18 @@ class _CategoryRouteState extends State<CategoryRoute> {
   @override
   Widget build(BuildContext context) {
     // TODO: Import and use the Backdrop widget
-    final listView = Container(
-      color: _backgroundColor,
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _buildCategoryWidgets(),
-    );
-
-    final appBar = AppBar(
-      elevation: 0.0,
-      title: Text(
-        'Unit Converter',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 30.0,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: _backgroundColor,
-    );
-
-    return Scaffold(
-      appBar: appBar,
-      body: listView,
+    if (currentCategory == null) {
+      print("currentCategory == null");
+    }
+    return Backdrop(
+      backTitle: Text("Select a category"),
+      backPanel: _buildCategoryWidgets(),
+      frontTitle: Text("Unit Converter"),
+      frontPanel: currentCategory == null
+          ? UnitConverter(category: defaultCategory)
+          : UnitConverter(category: currentCategory),
+      currentCategory:
+          currentCategory == null ? defaultCategory : currentCategory,
     );
   }
 }
