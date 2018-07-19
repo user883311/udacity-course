@@ -4,7 +4,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 import 'backdrop.dart';
@@ -72,6 +72,17 @@ class _CategoryRouteState extends State<CategoryRoute> {
     }),
   ];
   // TODO: Add image asset paths here
+  String imageAssetPath = "assets/icons/";
+  static const _icons = <String>[
+    'assets/icons/length.png',
+    'assets/icons/area.png',
+    'assets/icons/volume.png',
+    'assets/icons/mass.png',
+    'assets/icons/time.png',
+    'assets/icons/digital_storage.png',
+    'assets/icons/power.png',
+    'assets/icons/currency.png',
+  ];
 
   @override
   Future<void> didChangeDependencies() async {
@@ -98,13 +109,16 @@ class _CategoryRouteState extends State<CategoryRoute> {
     data.keys.forEach((key) {
       final List<Unit> units =
           data[key].map<Unit>((dynamic data) => Unit.fromJson(data)).toList();
-
+      // String categoryIconPath =
+      //     imageAssetPath + key.toString().toLowerCase() + ".png";
       var category = Category(
         name: key,
         units: units,
         color: _baseColors[categoryIndex],
+        iconLocation: _icons[categoryIndex],
         // TODO: Replace the placeholder icon with an icon image path
-        iconLocation: Icons.cake,
+        // iconLocation: Icons.cake,
+
       );
       setState(() {
         if (categoryIndex == 0) {

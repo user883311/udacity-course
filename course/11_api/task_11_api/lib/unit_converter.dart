@@ -3,14 +3,12 @@
 // found in the LICENSE file.
 
 // TODO: Import necessary packages
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import 'category.dart';
 import 'unit.dart';
-
+import 'api.dart';
 const _padding = EdgeInsets.all(16.0);
 
 /// [UnitConverter] where users can input amounts to convert in one [Unit]
@@ -103,11 +101,19 @@ class _UnitConverterState extends State<UnitConverter> {
 
   // TODO: If in the Currency [Category], call the API to retrieve the conversion.
   // Remember, the API call is an async function.
-  void _updateConversion() {
+  void _updateConversion() async {
+    if(widget.category.name == "Currency"){
+       final api = Api();
+      final conversion = await api.convert("currency", _fromValue.name, _toValue.name,_inputValue);
+      setState(() {
+        _convertedValue = _format(conversion);
+      });
+
+    } else {
     setState(() {
       _convertedValue =
           _format(_inputValue * (_toValue.conversion / _fromValue.conversion));
-    });
+    });}
   }
 
   void _updateInputValue(String input) {

@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // TODO: Import necessary package
+import 'api.dart';
 import 'backdrop.dart';
 import 'category.dart';
 import 'category_tile.dart';
@@ -92,6 +93,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
     // We only want to load our data in once
     if (_categories.isEmpty) {
       await _retrieveLocalCategories();
+      await _retrieveApiCategory("currency");
       // TODO: Call _retrieveApiCategory() here
     }
   }
@@ -100,8 +102,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
   Future<void> _retrieveLocalCategories() async {
     // Consider omitting the types for local variables. For more details on Effective
     // Dart Usage, see https://www.dartlang.org/guides/language/effective-dart/usage
-    final json = DefaultAssetBundle
-        .of(context)
+    final json = DefaultAssetBundle.of(context)
         .loadString('assets/data/regular_units.json');
     final data = JsonDecoder().convert(await json);
     if (data is! Map) {
@@ -130,7 +131,26 @@ class _CategoryRouteState extends State<CategoryRoute> {
 
   // TODO: Add the Currency Category retrieved from the API, to our _categories
   /// Retrieves a [Category] and its [Unit]s from an API on the web
-  Future<void> _retrieveApiCategory() async {}
+  Future<void> _retrieveApiCategory(String categoryName) async {
+    final api = new Api();
+    final jsonResponse = await api.getJson(api.url, "/$categoryName");
+    final units = jsonResponse["units"]; // List
+    // get the list of unit names by looping through unit
+    final List<Unit> categoryUnits = [];
+    for (var item in units) {
+      categoryUnits.add(item["name"]);
+    }
+
+    //add the Category to our _categories
+    setState(() {
+      _categories.add(Category(
+        name: categoryName,
+        units: categoryUnits,
+        color: _baseColors.last,
+        iconLocation: _icons.last,
+      ));
+    });
+  }
 
   /// Function to call when a [Category] is tapped.
   void _onCategoryTap(Category category) {
